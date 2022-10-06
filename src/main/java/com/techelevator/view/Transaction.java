@@ -1,24 +1,32 @@
 package com.techelevator.view;
 
 import com.techelevator.Item;
+import com.techelevator.Log;
 
 public class Transaction {
     private int money;
-
-    Transaction () {
+    private Menu menu;
+    private Log 
+    public Transaction (Menu menu) {
         money = 0;
+        this.menu=menu;
     }
     public void updateMoney (int amt) {
         money += amt;
+
+
     }
     public void updateLog(String extraPart) {
-
+        System.out.println("updated string");
     }
     public void purchase(Item item) {
         // determine if purchase is possible if so ...
-        updateMoney(0); // pass in negative price of item
-        // update Menu () //
+        updateMoney(-item.getPrice()); // pass in negative price of item
+        menu.updateMenu(item);
     }
+
+
+
 }
 
 
