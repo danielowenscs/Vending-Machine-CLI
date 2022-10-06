@@ -4,14 +4,36 @@ public class Item {
 
     String name;
     public int price;
-    public int slotIdentifier;
+    public String slotIdentifier;
+    private String type;
+    private String phrase;
 
-    public Item(String name, int slotIdentifier, int price){
+    public Item(String slotIdentifier, String name, String price, String type){
         this.name=name;
         this.slotIdentifier=slotIdentifier;
-        this.price=price;
+        this.price= 0;
+        this.type = type;
+        setTypePhrase();
+    }
+    private String setTypePhrase () {
+        if (type.equals("Candy")) {
+            phrase = "..";
+        } else if (type.equals("Chips")) {
+            phrase = "..";
+        } else if (type.equals("Drink")) {
+            phrase = "..";
+        } else if (type.equals("Gum")) {
+            phrase = "..";
+        } else {
+            phrase = "not found";
+
+        }
+        return"";
     }
 
+    private void convertToInt () {
+
+        }
 
     public String getName() {
         return name;
@@ -22,11 +44,11 @@ public class Item {
     }
 
 
-    public int getSlotIdentifier() {
+    public String getSlotIdentifier() {
         return slotIdentifier;
     }
 
-    public void setSlotIdentifier(int slotIdentifier) {
+    public void setSlotIdentifier(String slotIdentifier) {
         this.slotIdentifier = slotIdentifier;
     }
 
