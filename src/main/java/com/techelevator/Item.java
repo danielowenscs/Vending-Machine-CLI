@@ -1,60 +1,47 @@
 package com.techelevator;
 
-public class Item {
+import java.math.BigDecimal;
 
-    String name;
-    public String priceAsString;
-    public String slotIdentifier;
+public class Item {
+    private String slotIdentifier;
+    private String name;
+    private BigDecimal price;
+
     private String type;
     private String phrase;
-    private int priceAsInt;
 
-    public Item(String slotIdentifier, String name, String priceAsString, String type){
+    public Item(String slotIdentifier, String name, String price, String type){
         this.name=name;
         this.slotIdentifier=slotIdentifier;
-        this.priceAsString= priceAsString;
-        priceAsInt=Integer.parseInt(priceAsString);
+        this.price = new BigDecimal(price);
         this.type = type;
-        setTypePhrase();
+        this.phrase = setTypePhrase();
     }
     private String setTypePhrase () {
         if (type.equals("Candy")) {
-            phrase = "..";
+            return "..";
         } else if (type.equals("Chips")) {
-            phrase = "..";
+            return "..";
         } else if (type.equals("Drink")) {
-            phrase = "..";
+            return "..";
         } else if (type.equals("Gum")) {
-            phrase = "..";
+            return "..";
         } else {
-            phrase = "not found";
+            return "code should should have not reached this point";
 
         }
-        return"";
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
     public String getSlotIdentifier() {
         return slotIdentifier;
     }
 
-    public void setSlotIdentifier(String slotIdentifier) {
-        this.slotIdentifier = slotIdentifier;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public int getPrice() {
-        return priceAsInt;
-    }
-
-    public void setPrice(int price) {
-        this.priceAsInt = price;
-    }
 }
