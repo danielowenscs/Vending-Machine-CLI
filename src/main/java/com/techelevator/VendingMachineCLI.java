@@ -1,12 +1,16 @@
 package com.techelevator;
 
 import com.techelevator.view.Menu;
+import com.techelevator.view.Transaction;
 
 public class VendingMachineCLI {
 	public static void main(String[] args) {
 		Menu menu = new Menu();
+		Log log = new Log(menu);
 		menu.printMenu();
-	}
+		Transaction transaction = new Transaction(menu, log);
+		transaction.updateMoney(5);
+;	}
 }
 
 

@@ -6,12 +6,15 @@ import com.techelevator.Log;
 public class Transaction {
     private int money;
     private Menu menu;
-    private Log 
-    public Transaction (Menu menu) {
+    private Log log;
+
+    public Transaction (Menu menu, Log log) {
+        this.log = log;
         money = 0;
         this.menu=menu;
     }
-    public void updateMoney (int amt) {
+    public void updateFeed (int amt) {
+        log.updateLogFeed(money, amt);
         money += amt;
 
 
@@ -21,8 +24,13 @@ public class Transaction {
     }
     public void purchase(Item item) {
         // determine if purchase is possible if so ...
-        updateMoney(-item.getPrice()); // pass in negative price of item
+        money -= item.getPrice(); // pass in negative price of item
         menu.updateMenu(item);
+        log.updateLogPurchase(item, money);
+//        getChange()
+    }
+    private void getChange(){
+        
     }
 
 
