@@ -3,15 +3,17 @@ package com.techelevator;
 public class Item {
 
     String name;
-    public int price;
+    public String priceAsString;
     public String slotIdentifier;
     private String type;
     private String phrase;
+    private int priceAsInt;
 
-    public Item(String slotIdentifier, String name, String price, String type){
+    public Item(String slotIdentifier, String name, String priceAsString, String type){
         this.name=name;
         this.slotIdentifier=slotIdentifier;
-        this.price= 0;
+        this.priceAsString= priceAsString;
+        priceAsInt=Integer.parseInt(priceAsString);
         this.type = type;
         setTypePhrase();
     }
@@ -31,10 +33,6 @@ public class Item {
         return"";
     }
 
-    private void convertToInt () {
-
-        }
-
     public String getName() {
         return name;
     }
@@ -53,10 +51,10 @@ public class Item {
     }
 
     public int getPrice() {
-        return price;
+        return priceAsInt;
     }
 
     public void setPrice(int price) {
-        this.price = price;
+        this.priceAsInt = price;
     }
 }

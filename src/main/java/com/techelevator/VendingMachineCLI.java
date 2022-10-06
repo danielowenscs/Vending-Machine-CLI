@@ -9,8 +9,9 @@ public class VendingMachineCLI {
 		Log log = new Log(menu);
 		menu.printMenu();
 		Transaction transaction = new Transaction(menu, log);
-		transaction.updateMoney(5);
-;	}
+		transaction.updateFeed(27);
+		transaction.getChange();
+	}
 }
 
 

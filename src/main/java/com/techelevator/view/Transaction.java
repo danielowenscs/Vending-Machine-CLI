@@ -23,14 +23,33 @@ public class Transaction {
         System.out.println("updated string");
     }
     public void purchase(Item item) {
-        // determine if purchase is possible if so ...
-        money -= item.getPrice(); // pass in negative price of item
-        menu.updateMenu(item);
-        log.updateLogPurchase(item, money);
+
+        if(money>item.getPrice()) {
+            money -= item.getPrice(); // pass in negative price of item
+            menu.updateMenu(item);
+            log.updateLogPurchase(item, money);
+        }
 //        getChange()
     }
-    private void getChange(){
-        
+
+
+    public void getChange(){
+        int currentMoney=money;
+        while(currentMoney!=0){
+            if(currentMoney/25>0){
+                System.out.println("Quarter");
+                currentMoney-=25;
+            }else if(currentMoney/10>0){
+                System.out.println("Dime");
+                currentMoney-=10;
+            } else if(currentMoney/5>0){
+                System.out.println("nickle");
+                currentMoney-=5;
+            } else{
+                System.out.println("pennies");
+                currentMoney-=1;
+            }
+        }
     }
 
 

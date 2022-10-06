@@ -17,7 +17,7 @@ public class Log {
     }
 
     public void updateLogFeed(int moneyBefore, int moneyAfter){
-        System.out.printf("%s FEED MONEY: $%d $%d",getDateTime(),moneyBefore,moneyAfter);
+        System.out.printf("%s FEED MONEY: $%d $%d\n",getDateTime(),moneyBefore,moneyAfter);
         //System.out.println("01/01/2019 12:00:15 PM FEED MONEY:"+moneyBefore+" "$10.00");
     }
 
