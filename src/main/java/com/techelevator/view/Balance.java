@@ -12,6 +12,9 @@ public class Balance {
     public BigDecimal getBalance() {
         return balance;
     }
+    public String getBalanceAsStr() {
+        return balance.toString();
+    }
 
     public void addToBalance(BigDecimal amt) {
         // check if input is good
@@ -20,10 +23,9 @@ public class Balance {
 
     //this function checks if a purchase can be made, if so it then subtracts from the money
     public void makePurchase(BigDecimal price) {
-        if(balance.compareTo(price) > 0) {
-            balance.subtract(price);
-        }
-        else {
+        if (balance.compareTo(price) > 0) {
+            balance = balance.subtract(price);
+        } else {
             System.out.println("purchase cannot be made");
         }
     }
