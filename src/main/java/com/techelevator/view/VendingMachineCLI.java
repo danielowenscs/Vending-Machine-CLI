@@ -5,6 +5,7 @@ import com.techelevator.view.LogData;
 import com.techelevator.view.Menu;
 import com.techelevator.view.Balance;
 
+import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
@@ -13,7 +14,7 @@ public class VendingMachineCLI {
     private static Balance balance = new Balance();
     private static LogData logData = new LogData();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         Menu menu = new Menu();
         boolean exitProgram = false;
         boolean isTransactionComplete = false;
@@ -69,6 +70,7 @@ public class VendingMachineCLI {
                 exitProgram = true;
             }
         }
+        logData.salesReport();
     }
 
     private static void feedMoney(String userInput) {
