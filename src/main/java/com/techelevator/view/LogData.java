@@ -14,6 +14,7 @@ public class LogData {
     private static int lineCount;
     private static List<String> listOfLogData = new ArrayList<String>();
 
+
     LogData() {
         lineCount = 0;
         List<String> listOfLogData;
@@ -33,6 +34,9 @@ public class LogData {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss a");
         Date date = new Date();
         return sdf.format(date);
+    }
+    public void getChange(String balance){
+        listOfLogData.add(String.format("%s GIVE CHANGE: $%S $0.00", getDateTime(), balance));
     }
 
     public static void salesReport() throws FileNotFoundException {

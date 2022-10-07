@@ -70,6 +70,7 @@ public class VendingMachineCLI {
                 exitProgram = true;
             }
         }
+        logData.getChange(balance.getBalanceAsStr());
         logData.salesReport();
     }
 
