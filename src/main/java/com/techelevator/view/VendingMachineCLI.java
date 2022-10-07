@@ -7,6 +7,7 @@ import com.techelevator.view.Balance;
 
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class VendingMachineCLI {
@@ -26,7 +27,7 @@ public class VendingMachineCLI {
             userInput = vendingMachine.getUserInput();
             System.out.println();
             if (userInput.equals("1")) {
-                vendingMachine.printMenu();
+                printMenu();
                 System.out.println();
             }
             else if (userInput.equals("2")) {
@@ -34,7 +35,10 @@ public class VendingMachineCLI {
                     vendingMachine.displayBalance();
                     System.out.println("(1) Feed Money");
                     System.out.println("(2) Select Product");
-                    System.out.println("(3) Finish Transaction\n");
+                    System.out.println("(3) Finish Transaction");
+                    System.out.println();
+                    displayBalance();
+                    System.out.println();
                     System.out.print("Your Choice: ");
                     userInput = vendingMachine.getUserInput();
                     System.out.println();
@@ -42,44 +46,60 @@ public class VendingMachineCLI {
                     if (userInput.equals("1")) {
                         System.out.print("Enter The Amount Of Money To Add (format 0.00): ");
                         userInput = vendingMachine.getUserInput();
+                        System.out.println();
                         vendingMachine.feedMoney(userInput);
+
                     }
                     else if (userInput.equals("2")) {
-                        vendingMachine.printMenu();
+                        printMenu();
                         System.out.println();
 
                         System.out.print("Enter The Slot Identifier Of The Product You Wish To Purchase: ");
                         userInput = vendingMachine.getUserInput();
                         System.out.println();
-                        vendingMachine.makePurchase(userInput);
+                       Item itemSelected = vendingMachine.makePurchase(userInput);
+                        System.out.printf("%s | %s | %5.2f | %s%n", itemSelected.getName(), itemSelected.getPrice().toString(), vendingMachine.getBalance(), itemSelected.getPhrase());
+                        System.out.println();
                     }
                     else if (userInput.equals("3")) {
-                        isTransactionComplete = vendingMachine.finishTransaction();
+                        vendingMachine.finishTransaction();
                         System.out.println();
-                    } else {
-                        System.out.println("NOT AN OPTION");
-                        System.out.println();
+                        isTransactionComplete =  true;
+                    }
+                    else {
                     }
                 }
                 isTransactionComplete=false;
             }
             else if (userInput.equals("3")) {
-                isProgramOver = vendingMachine.programOver();
+               isProgramOver = true;
             }
             else {
-                System.out.println("NOT AN OPTION");
-                System.out.println();
+            }
+
+        }
+
+
+
+    }
+
+
+    private static void printMenu () {
+        Menu menu = vendingMachine.getMenu();
+        ArrayList <Item> menuItems = new ArrayList<Item>();
+        for (Item entry : menu.getMenu()) {
+            if (entry.getAmount() < 1) {
+                System.out.printf("%s | SOLD OUT\n", entry.getSlotIdentifier());
+            }
+            else {
+                System.out.printf("%s | %s | %s | %d\n", entry.getSlotIdentifier(), entry.getName(), entry.getPrice().toString(), entry.getAmount());
             }
         }
     }
 
-
-
-
-
-
-
-
+    private static void displayBalance() {
+        System.out.printf("Current Money Provided: $%5.2f %n", vendingMachine.getBalance());
+    }
 
 
 

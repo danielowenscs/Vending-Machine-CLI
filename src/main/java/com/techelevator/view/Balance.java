@@ -25,11 +25,7 @@ public class Balance {
 
     //this function checks if a purchase can be made, if so it then subtracts from the money
     public void makePurchase(BigDecimal price) {
-        if (balance.compareTo(price) >= 0) {
             balance = balance.subtract(price);
-        } else {
-            System.out.println("purchase cannot be made");
-        }
     }
 
     // this function gets the change

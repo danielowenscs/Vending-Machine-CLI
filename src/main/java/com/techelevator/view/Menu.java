@@ -11,17 +11,6 @@ public class Menu {
         setMenu();
     }
 
-    public static void printMenu() {
-        for (Item entry : menu) {
-            if (entry.getAmount() < 1) {
-                System.out.printf("%s | SOLD OUT\n", entry.getSlotIdentifier());
-            }
-            else {
-                System.out.printf("%s | %s | %s | %d\n", entry.getSlotIdentifier(), entry.getName(), entry.getPrice().toString(), entry.getAmount());
-            }
-        }
-    }
-
     public void updateMenuInventory(Item item) {
        item.setAmount(item.getAmount()-1);
     }
@@ -34,6 +23,10 @@ public class Menu {
         }
         // code should not reach here
         return null;
+    }
+
+    public List<Item> getMenu() {
+        return menu;
     }
 
     public void createSalesReport() {

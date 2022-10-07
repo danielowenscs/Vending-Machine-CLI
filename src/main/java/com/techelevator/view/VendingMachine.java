@@ -11,95 +11,108 @@ import java.util.Scanner;
 
 
 public class VendingMachine {
-    private Menu menu = new Menu ();
+    private Menu menu = new Menu();
     private Balance balance = new Balance();
     private LogData logData = new LogData();
     Scanner scanner = new Scanner(System.in);
 
     // get user input
-    public String getUserInput () {
+    public String getUserInput() {
         String userInput = scanner.nextLine();
-        userInput= inputHandler(userInput);
+        userInput = inputHandler(userInput);
         return userInput;
     }
-
-    // enters 1
-    public void printMenu () {
-        menu.printMenu();
+    public Menu getMenu () {
+        return menu;
     }
+
+
+
 
     // enters 2 make purchase
 
     // enters 1
-    public void feedMoney (String userInput) {
-        //00.00
+    public void feedMoney(String userInput) {
 
         //update balance
         balance.addToBalance(new BigDecimal(userInput));
         // update log
         logData.updateLogFeed(new BigDecimal(userInput), balance.getBalanceAsStr());
+        // return balance
+        balance.getBalance();
+
+//        // checks if valid
+//        if (userInput.matches("^[0-9]*(\\.[0-9]{0,2})?$")) {
+//            //update balance
+//            balance.addToBalance(new BigDecimal(userInput));
+//            // update log
+//            logData.updateLogFeed(new BigDecimal(userInput), balance.getBalanceAsStr());
+//            return"";
+//        } else {
+//            return badInputMessage();
+//        }
     }
 
     // enters 2
 
     // display balance
-    public void displayBalance () {
-        System.out.printf("Current Money Provided: $%s\n\n", balance.getBalanceAsStr());
+    public void displayBalance() {
+        //System.out.printf("Current Money Provided: $%s\n\n", balance.getBalanceAsStr());
     }
-    public void makePurchase(String userInput) {
-        // select Item
 
-        Item itemSelected = menu.getItem(userInput);
-        if (itemSelected == null) {
-            System.out.println("Not An Option");
-            System.out.println();
-            return;
-        } else {
-            // update balance
-            balance.makePurchase(itemSelected.getPrice()); // item price
-            // update purchase log
-            logData.updateLogPurchase(itemSelected.getName(), itemSelected.getSlotIdentifier(), itemSelected.getPrice(), balance.getBalanceAsStr());
-            // update menu inventory
-            menu.updateMenuInventory(itemSelected);
-            // need logic for if a purchase can't be made
-            System.out.printf("%s | %s | %s | %s\n\n", itemSelected.getName(), itemSelected.getPrice().toString(), balance.getBalanceAsStr(), itemSelected.getPhrase());
-        }
+    public Item makePurchase(String userInput) {
+    // if user input was bad form
+
+    // select input, if in valid it's set to null
+    // if it's null you simply return the bad input message
+    Item itemSelected = menu.getItem(userInput);
+        // update balance
+        balance.makePurchase(itemSelected.getPrice()); // item price
+        // update purchase log
+        logData.updateLogPurchase(itemSelected.getName(), itemSelected.getSlotIdentifier(), itemSelected.getPrice(), balance.getBalanceAsStr());
+        // update menu inventory
+        menu.updateMenuInventory(itemSelected);
+        // return receipt
+       // System.out.printf("%20s | %s | %5.2f | %s%n", itemSelected.getName(), itemSelected.getPrice().toString(), balance.getBalance(), itemSelected.getPhrase());
+        //return String.format("%s | %s | %5.2f | %s\n\n", itemSelected.getName(), itemSelected.getPrice().toString(), balance.getBalance(), itemSelected.getPhrase());
+        return itemSelected;
     }
+
+    public BigDecimal getBalance() {
+        return balance.getBalance();
+    }
+
     // enters 3
-    public boolean finishTransaction () {
+    public boolean finishTransaction() {
         printChange();
         logData.logChange(balance.getBalanceAsStr());
         return true;
     }
 
-    public boolean programOver () {
-
-
-        return true;
+    private String badInputMessage() {
+        return "The Input You Entered was in Valid, Please Try Again";
     }
 
+
     // format change
-    public void printChange () {
-        if(balance.getChange()==null){
+    public void printChange() {
+        if (balance.getChange() == null) {
             System.out.println("You Have No Change");
             return;
         }
         Map<String, Integer> changeAsMap = new HashMap<String, Integer>();
-        changeAsMap=balance.getChange();
+        changeAsMap = balance.getChange();
         System.out.println("Your Change Is:");
         for (Map.Entry<String, Integer> entry : changeAsMap.entrySet()) {
-            if(entry.getValue()>1) {
+            if (entry.getValue() > 1) {
                 System.out.printf("%d %ss\n", entry.getValue(), entry.getKey());
-            }
-            else
-            {
-                System.out.printf("%d %s\n",entry.getValue(),entry.getKey());
+            } else {
+                System.out.printf("%d %s\n", entry.getValue(), entry.getKey());
             }
         }
     }
 
-
-    private String inputHandler(String userInput){
+    private String inputHandler(String userInput) {
         return userInput.toUpperCase();
     }
 
