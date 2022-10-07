@@ -25,7 +25,7 @@ public class Balance {
 
     //this function checks if a purchase can be made, if so it then subtracts from the money
     public void makePurchase(BigDecimal price) {
-        if (balance.compareTo(price) > 0) {
+        if (balance.compareTo(price) >= 0) {
             balance = balance.subtract(price);
         } else {
             System.out.println("purchase cannot be made");
@@ -33,15 +33,14 @@ public class Balance {
     }
 
     // this function gets the change
-    public String getChange() {
+    public Map<String,Integer> getChange() {
         // if balance is zero no change needs to be given so we can exit the function
         if (getBalance().compareTo(BigDecimal.ZERO) < 1)  {
-            return"";
+            return null;
         }
 
         Map<String, Integer> change = new HashMap<String, Integer>();
         String currCoin = "";
-        String totalChange="";
         int balanceLeft = balance.multiply(new BigDecimal("100")).intValue();
         while (balanceLeft != 0) {
             if (balanceLeft / 25 > 0) {
@@ -55,7 +54,7 @@ public class Balance {
                 currCoin = "Nickel";
                 balanceLeft -= 5;
             } else {
-                currCoin = "Pennies";
+                currCoin = "Pennie";
                 balanceLeft -= 1;
             }
 
@@ -65,12 +64,8 @@ public class Balance {
             else {
                 change.put(currCoin, 1);
             }
-            totalChange += currCoin;
         }
-        return totalChange;
+        return change;
     }
 
-    public void printChange () {
-
-    }
 }

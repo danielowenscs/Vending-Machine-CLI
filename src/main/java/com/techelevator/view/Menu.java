@@ -14,7 +14,7 @@ public class Menu {
     public static void printMenu() {
         for (Item entry : menu) {
             if (entry.getAmount() < 1) {
-                System.out.printf("%s | SOLD OUT", entry.getSlotIdentifier());
+                System.out.printf("%s | SOLD OUT\n", entry.getSlotIdentifier());
             }
             else {
                 System.out.printf("%s | %s | %s | %d\n", entry.getSlotIdentifier(), entry.getName(), entry.getPrice().toString(), entry.getAmount());

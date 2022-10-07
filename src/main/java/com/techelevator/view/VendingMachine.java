@@ -2,7 +2,11 @@ package com.techelevator.view;
 
 import com.techelevator.view.Menu;
 
+import java.awt.geom.Arc2D;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -15,6 +19,7 @@ public class VendingMachine {
     // get user input
     public String getUserInput () {
         String userInput = scanner.nextLine();
+        userInput= inputHandler(userInput);
         return userInput;
     }
 
@@ -27,6 +32,8 @@ public class VendingMachine {
 
     // enters 1
     public void feedMoney (String userInput) {
+        //00.00
+
         //update balance
         balance.addToBalance(new BigDecimal(userInput));
         // update log
@@ -40,32 +47,60 @@ public class VendingMachine {
         System.out.printf("Current Money Provided: $%s\n\n", balance.getBalanceAsStr());
     }
     public void makePurchase(String userInput) {
-        System.out.println();
         // select Item
-        Item itemSelected = menu.getItem(userInput);
-        // update balance
-        balance.makePurchase(itemSelected.getPrice()); // item price
-        // update purchase log
-        logData.updateLogPurchase(itemSelected.getName(), itemSelected.getSlotIdentifier(), itemSelected.getPrice(), balance.getBalanceAsStr());
-        // update menu inventory
-        menu.updateMenuInventory(itemSelected);
-        // need logic for if a purchase can't be made
-        System.out.printf("%s | %s | %s | %s\n\n", itemSelected.getName(), itemSelected.getPrice().toString(), balance.getBalanceAsStr(), itemSelected.getPhrase());
-    }
 
+        Item itemSelected = menu.getItem(userInput);
+        if (itemSelected == null) {
+            System.out.println("Not An Option");
+            System.out.println();
+            return;
+        } else {
+            // update balance
+            balance.makePurchase(itemSelected.getPrice()); // item price
+            // update purchase log
+            logData.updateLogPurchase(itemSelected.getName(), itemSelected.getSlotIdentifier(), itemSelected.getPrice(), balance.getBalanceAsStr());
+            // update menu inventory
+            menu.updateMenuInventory(itemSelected);
+            // need logic for if a purchase can't be made
+            System.out.printf("%s | %s | %s | %s\n\n", itemSelected.getName(), itemSelected.getPrice().toString(), balance.getBalanceAsStr(), itemSelected.getPhrase());
+        }
+    }
     // enters 3
     public boolean finishTransaction () {
-        System.out.println(formatChange());
+        printChange();
+        logData.logChange(balance.getBalanceAsStr());
         return true;
     }
 
     public boolean programOver () {
+
+
         return true;
     }
 
     // format change
-    public String formatChange () {
-        return null;
+    public void printChange () {
+        if(balance.getChange()==null){
+            System.out.println("You Have No Change");
+            return;
+        }
+        Map<String, Integer> changeAsMap = new HashMap<String, Integer>();
+        changeAsMap=balance.getChange();
+        System.out.println("Your Change Is:");
+        for (Map.Entry<String, Integer> entry : changeAsMap.entrySet()) {
+            if(entry.getValue()>1) {
+                System.out.printf("%d %ss\n", entry.getValue(), entry.getKey());
+            }
+            else
+            {
+                System.out.printf("%d %s\n",entry.getValue(),entry.getKey());
+            }
+        }
+    }
+
+
+    private String inputHandler(String userInput){
+        return userInput.toUpperCase();
     }
 
 }

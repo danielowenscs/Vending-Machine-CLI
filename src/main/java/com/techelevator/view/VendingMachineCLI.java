@@ -42,7 +42,6 @@ public class VendingMachineCLI {
                     if (userInput.equals("1")) {
                         System.out.print("Enter The Amount Of Money To Add (format 0.00): ");
                         userInput = vendingMachine.getUserInput();
-                        System.out.println();
                         vendingMachine.feedMoney(userInput);
                     }
                     else if (userInput.equals("2")) {
@@ -56,11 +55,20 @@ public class VendingMachineCLI {
                     }
                     else if (userInput.equals("3")) {
                         isTransactionComplete = vendingMachine.finishTransaction();
+                        System.out.println();
+                    } else {
+                        System.out.println("NOT AN OPTION");
+                        System.out.println();
                     }
                 }
+                isTransactionComplete=false;
             }
             else if (userInput.equals("3")) {
-                isProgramOver = vendingMachine.finishTransaction();
+                isProgramOver = vendingMachine.programOver();
+            }
+            else {
+                System.out.println("NOT AN OPTION");
+                System.out.println();
             }
         }
     }
