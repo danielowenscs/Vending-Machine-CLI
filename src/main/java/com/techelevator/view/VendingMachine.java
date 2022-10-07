@@ -60,22 +60,29 @@ public class VendingMachine {
         //System.out.printf("Current Money Provided: $%s\n\n", balance.getBalanceAsStr());
     }
 
-    public Item makePurchase(String userInput) {
-    // if user input was bad form
 
-    // select input, if in valid it's set to null
-    // if it's null you simply return the bad input message
-    Item itemSelected = menu.getItem(userInput);
-        // update balance
-        balance.makePurchase(itemSelected.getPrice()); // item price
-        // update purchase log
-        logData.updateLogPurchase(itemSelected.getName(), itemSelected.getSlotIdentifier(), itemSelected.getPrice(), balance.getBalanceAsStr());
-        // update menu inventory
-        menu.updateMenuInventory(itemSelected);
-        // return receipt
-       // System.out.printf("%20s | %s | %5.2f | %s%n", itemSelected.getName(), itemSelected.getPrice().toString(), balance.getBalance(), itemSelected.getPhrase());
-        //return String.format("%s | %s | %5.2f | %s\n\n", itemSelected.getName(), itemSelected.getPrice().toString(), balance.getBalance(), itemSelected.getPhrase());
-        return itemSelected;
+    public Item makePurchase(String userInput) {
+
+        try {
+            // if user input was bad form
+            // select input, if in valid it's set to null
+            // if it's null you simply return the bad input message
+            Item itemSelected = menu.getItem(userInput);
+            // update balance
+
+            balance.makePurchase(itemSelected.getPrice()); // item price
+            // update purchase log
+            logData.updateLogPurchase(itemSelected.getName(), itemSelected.getSlotIdentifier(), itemSelected.getPrice(), balance.getBalanceAsStr());
+            // update menu inventory
+            menu.updateMenuInventory(itemSelected);
+            // return receipt
+            // System.out.printf("%20s | %s | %5.2f | %s%n", itemSelected.getName(), itemSelected.getPrice().toString(), balance.getBalance(), itemSelected.getPhrase());
+            //return String.format("%s | %s | %5.2f | %s\n\n", itemSelected.getName(), itemSelected.getPrice().toString(), balance.getBalance(), itemSelected.getPhrase());
+            return itemSelected;
+        }
+        catch (Exception e) {
+            System.out.println("Purchase Cannot Be Made");
+        }
     }
 
     public BigDecimal getBalance() {

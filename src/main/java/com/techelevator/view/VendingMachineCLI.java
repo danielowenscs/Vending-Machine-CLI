@@ -26,59 +26,65 @@ public class VendingMachineCLI {
             System.out.print("Your Choice: ");
             userInput = vendingMachine.getUserInput();
             System.out.println();
-            if (userInput.equals("1")) {
-                printMenu();
-                System.out.println();
-            }
-            else if (userInput.equals("2")) {
-                while (!isTransactionComplete) {
-                    vendingMachine.displayBalance();
-                    System.out.println("(1) Feed Money");
-                    System.out.println("(2) Select Product");
-                    System.out.println("(3) Finish Transaction");
+            try {
+                if (userInput.equals("1")) {
+                    printMenu();
                     System.out.println();
-                    displayBalance();
-                    System.out.println();
-                    System.out.print("Your Choice: ");
-                    userInput = vendingMachine.getUserInput();
-                    System.out.println();
-
-                    if (userInput.equals("1")) {
-                        System.out.print("Enter The Amount Of Money To Add (format 0.00): ");
+                } else if (userInput.equals("2")) {
+                    while (!isTransactionComplete) {
+                        vendingMachine.displayBalance();
+                        System.out.println("(1) Feed Money");
+                        System.out.println("(2) Select Product");
+                        System.out.println("(3) Finish Transaction");
+                        System.out.println();
+                        displayBalance();
+                        System.out.println();
+                        System.out.print("Your Choice: ");
                         userInput = vendingMachine.getUserInput();
                         System.out.println();
-                        vendingMachine.feedMoney(userInput);
 
-                    }
-                    else if (userInput.equals("2")) {
-                        printMenu();
-                        System.out.println();
 
-                        System.out.print("Enter The Slot Identifier Of The Product You Wish To Purchase: ");
-                        userInput = vendingMachine.getUserInput();
-                        System.out.println();
-                       Item itemSelected = vendingMachine.makePurchase(userInput);
-                        System.out.printf("%s | %s | %5.2f | %s%n", itemSelected.getName(), itemSelected.getPrice().toString(), vendingMachine.getBalance(), itemSelected.getPhrase());
-                        System.out.println();
+                        if (userInput.equals("1")) {
+                            try {
+
+                                System.out.print("Enter The Amount Of Money To Add (format 0.00): ");
+                                userInput = vendingMachine.getUserInput();
+                                System.out.println();
+                                vendingMachine.feedMoney(userInput);
+                            } catch (Exception e){
+                                System.out.println("ERROR: Please Enter Correct Format");
+                            }
+
+                        }
+                        else if (userInput.equals("2")) {
+                                printMenu();
+                                System.out.println();
+                                System.out.print("Enter The Slot Identifier Of The Product You Wish To Purchase: ");
+                                userInput = vendingMachine.getUserInput();
+                                System.out.println();
+                                Item itemSelected = vendingMachine.makePurchase(userInput);
+                                System.out.printf("%s | %s | %5.2f | %s%n", itemSelected.getName(), itemSelected.getPrice().toString(), vendingMachine.getBalance(), itemSelected.getPhrase());
+                                System.out.println();
+
+                        } else if (userInput.equals("3")) {
+                            vendingMachine.finishTransaction();
+                            System.out.println();
+                            isTransactionComplete = true;
+                        } else {
+                            System.out.println("Invalid Input Please Pick (1) (2) (3)");
+                        }
                     }
-                    else if (userInput.equals("3")) {
-                        vendingMachine.finishTransaction();
-                        System.out.println();
-                        isTransactionComplete =  true;
-                    }
-                    else {
-                    }
+                    isTransactionComplete = false;
                 }
-                isTransactionComplete=false;
+                else if (userInput.equals("3")) {
+                    isProgramOver = true;
+                } else {
+                }
             }
-            else if (userInput.equals("3")) {
-               isProgramOver = true;
+            catch (Exception e){
+                System.out.println("NOT VALID INPUT");
             }
-            else {
-            }
-
         }
-
 
 
     }
