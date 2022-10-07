@@ -6,9 +6,9 @@ public class Item {
     private String slotIdentifier;
     private String name;
     private BigDecimal price;
-
     private String type;
     private String phrase;
+    private int amount;
 
     public Item(String slotIdentifier, String name, String price, String type) {
         this.name = name;
@@ -16,6 +16,7 @@ public class Item {
         this.price = new BigDecimal(price);
         this.type = type;
         this.phrase = setTypePhrase();
+        this.amount = 5;
     }
 
     private String setTypePhrase() {
@@ -36,8 +37,19 @@ public class Item {
         return name;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     public String getSlotIdentifier() {
         return slotIdentifier;
+    }
+    public String getPhrase () {
+        return phrase;
     }
 
     public BigDecimal getPrice() {

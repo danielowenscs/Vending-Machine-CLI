@@ -1,6 +1,8 @@
 package com.techelevator.view;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Balance {
     private BigDecimal balance;
@@ -31,22 +33,44 @@ public class Balance {
     }
 
     // this function gets the change
-    public void getChange() {
+    public String getChange() {
+        // if balance is zero no change needs to be given so we can exit the function
+        if (getBalance().compareTo(BigDecimal.ZERO) < 1)  {
+            return"";
+        }
+
+        Map<String, Integer> change = new HashMap<String, Integer>();
+        String currCoin = "";
+        String totalChange="";
         int balanceLeft = balance.multiply(new BigDecimal("100")).intValue();
         while (balanceLeft != 0) {
             if (balanceLeft / 25 > 0) {
-                System.out.println("Quarter");
-                balanceLeft -= 25;
+                currCoin = "Quarter";
+                balanceLeft -=25;
+
             } else if (balanceLeft / 10 > 0) {
-                System.out.println("Dime");
+                currCoin = "Dime";
                 balanceLeft -= 10;
             } else if (balanceLeft / 5 > 0) {
-                System.out.println("Nickle");
+                currCoin = "Nickel";
                 balanceLeft -= 5;
             } else {
-                System.out.println("Pennies");
+                currCoin = "Pennies";
                 balanceLeft -= 1;
             }
+
+            if (change.containsKey(currCoin)) {
+                change.replace(currCoin, change.get(currCoin)+1);
+            }
+            else {
+                change.put(currCoin, 1);
+            }
+            totalChange += currCoin;
         }
+        return totalChange;
+    }
+
+    public void printChange () {
+
     }
 }

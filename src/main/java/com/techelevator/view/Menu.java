@@ -1,79 +1,59 @@
 package com.techelevator.view;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Menu {
-    private static Map<Item, Integer> menu = new HashMap<Item, Integer>();
+    private static List<Item> menu = new ArrayList<Item>();
 
     public Menu() {
-        String path = "C:/Users/Student/workspace/module-1-capstone-team-0/vendingmachine.csv";
-        File dataFile = getInputFileFromUser(path);
-        try (Scanner dataInput = new Scanner(dataFile)) {
-            while (dataInput.hasNextLine()) {
-                String lineOfText = dataInput.nextLine();
-                addMenuItem(lineOfText);
-            }
-        } catch (FileNotFoundException e) {
-            System.err.println("The file does not exist.");
-        }
+        setMenu();
     }
 
     public static void printMenu() {
-        for (Map.Entry<Item, Integer> entry : menu.entrySet()) {
-            if (entry.getValue() < 1) {
-                System.out.println(entry.getKey().getSlotIdentifier() + " | SOLD OUT");
-            } else {
-                System.out.println(entry.getKey().getSlotIdentifier() + " | " + entry.getKey().getName() + "|" + entry.getValue());
+        for (Item entry : menu) {
+            if (entry.getAmount() < 1) {
+                System.out.printf("%s | SOLD OUT", entry.getSlotIdentifier());
+            }
+            else {
+                System.out.printf("%s | %s | %s | %d\n", entry.getSlotIdentifier(), entry.getName(), entry.getPrice().toString(), entry.getAmount());
             }
         }
-    }
-
-    private static void addMenuItem(String line) {
-        String[] splited = line.split("\\|");
-        // need to accoount for data erors and convert string to int
-        menu.put(new Item(splited[0], splited[1], splited[2], splited[3]), 5);
     }
 
     public void updateMenuInventory(Item item) {
-        int amount = menu.get(item);
-        if (!(amount < 1)) {
-            menu.replace(item, amount -= 1);
-        }
+       item.setAmount(item.getAmount()-1);
     }
 
-    public Item getItem(String slotIdentifier) {
-        for (Map.Entry<Item, Integer> entry : menu.entrySet()) {
-            Item key = entry.getKey();
-            if (key.getSlotIdentifier().equals(slotIdentifier)) {
-                return key;
+    public Item getItem(String slotIdentifierToFind) {
+        for (Item entry : menu) {
+            if (entry.getSlotIdentifier().equals(slotIdentifierToFind)) {
+                return entry;
             }
         }
-        // should not reach here need to add check
+        // code should not reach here
         return null;
     }
 
     public void createSalesReport() {
-        for (Map.Entry<Item, Integer> entry : menu.entrySet()) {
-            Item key = entry.getKey();
-            System.out.printf("%s|%d\n", key.getName(), 5 - entry.getValue());
+        for (Item entry : menu) {
+            System.out.printf("%s|%d\n", entry.getName(), 5 - entry.getAmount());
         }
         System.out.println();
     }
 
-    private static File getInputFileFromUser(String path) {
-        File inputFile = new File(path);
-        if (inputFile.exists() == false) { // checks for the existence of a file
-            System.out.println(path + " does not exist");
-            System.exit(1); // Ends the program
-        } else if (inputFile.isFile() == false) {
-            System.out.println(path + " is not a file");
-            System.exit(1); // Ends the program
+    private static void setMenu() {
+        try {
+            File dataFile = new File ("C:\\Users\\Student\\workspace\\module-1-capstone-team-0\\vendingmachine.csv");
+            Scanner myReader = new Scanner(dataFile);
+            while (myReader.hasNextLine()) {
+                String[] splittedData =myReader.nextLine().split("\\|");
+                menu.add(new Item(splittedData[0], splittedData[1], splittedData[2], splittedData[3]));
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("The file does not exist.");
         }
-        return inputFile;
     }
-
 }
