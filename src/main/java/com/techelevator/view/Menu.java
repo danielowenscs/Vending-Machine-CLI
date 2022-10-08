@@ -1,6 +1,8 @@
 package com.techelevator.view;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -11,34 +13,31 @@ public class Menu {
         setMenu();
     }
 
+    // this updates the menu inventory by subtracting 1 from the inventory
     public void updateMenuInventory(Item item) {
        item.setAmount(item.getAmount()-1);
     }
 
+    // returns the instance of item in the menu that corresponds to the item
+    // if it cannot find the item it returns null
     public Item getItem(String slotIdentifierToFind) {
         for (Item entry : menu) {
             if (entry.getSlotIdentifier().equals(slotIdentifierToFind)) {
                 return entry;
             }
         }
-        // code should not reach here
         return null;
     }
 
+    // returns menu as a list
     public List<Item> getMenu() {
         return menu;
     }
 
-    public void createSalesReport() {
-        for (Item entry : menu) {
-            System.out.printf("%s|%d\n", entry.getName(), 5 - entry.getAmount());
-        }
-        System.out.println();
-    }
-
+    // this method reads data from the vendingmachine.csv file and then adds it to a list
     private static void setMenu() {
         try {
-            File dataFile = new File ("C:\\Users\\Student\\workspace\\module-1-capstone-team-0\\vendingmachine.csv");
+            final File dataFile = new File ("vendingmachine.csv");
             Scanner myReader = new Scanner(dataFile);
             while (myReader.hasNextLine()) {
                 String[] splittedData =myReader.nextLine().split("\\|");

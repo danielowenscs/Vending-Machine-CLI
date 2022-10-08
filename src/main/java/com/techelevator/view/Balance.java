@@ -18,6 +18,10 @@ public class Balance {
         return balance.toString();
     }
 
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
     public void addToBalance(BigDecimal amt) {
         // check if input is good
         balance = balance.add(amt);
@@ -29,39 +33,5 @@ public class Balance {
     }
 
     // this function gets the change
-    public Map<String,Integer> getChange() {
-        // if balance is zero no change needs to be given so we can exit the function
-        if (getBalance().compareTo(BigDecimal.ZERO) < 1)  {
-            return null;
-        }
-
-        Map<String, Integer> change = new HashMap<String, Integer>();
-        String currCoin = "";
-        int balanceLeft = balance.multiply(new BigDecimal("100")).intValue();
-        while (balanceLeft != 0) {
-            if (balanceLeft / 25 > 0) {
-                currCoin = "Quarter";
-                balanceLeft -=25;
-
-            } else if (balanceLeft / 10 > 0) {
-                currCoin = "Dime";
-                balanceLeft -= 10;
-            } else if (balanceLeft / 5 > 0) {
-                currCoin = "Nickel";
-                balanceLeft -= 5;
-            } else {
-                currCoin = "Pennie";
-                balanceLeft -= 1;
-            }
-
-            if (change.containsKey(currCoin)) {
-                change.replace(currCoin, change.get(currCoin)+1);
-            }
-            else {
-                change.put(currCoin, 1);
-            }
-        }
-        return change;
-    }
 
 }
