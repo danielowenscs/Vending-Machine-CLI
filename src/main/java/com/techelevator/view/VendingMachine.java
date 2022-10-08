@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -66,9 +67,9 @@ public class VendingMachine {
         return (!(itemSelected.getAmount() <= 0));
     }
 
-    public boolean isValidFunds(String slotIdentifier){
+    public boolean isValidFunds(String slotIdentifier) {
         Item itemSelected = menu.getItem(slotIdentifier);
-        return (!(getBalance().subtract(itemSelected.getPrice()).compareTo(BigDecimal.ZERO)<0));
+        return (!(getBalance().subtract(itemSelected.getPrice()).compareTo(BigDecimal.ZERO) < 0));
     }
 
     public void finishTransaction() {
@@ -78,7 +79,7 @@ public class VendingMachine {
         balance.setBalance(BigDecimal.ZERO);
     }
 
-    public void endProgram() {
+    public void secretOption() {
         createSalesReport();
     }
 
@@ -93,14 +94,27 @@ public class VendingMachine {
         }
     }
 
-    //this method creates a sales report file
+    //this methods creates a sales report file
     private void createSalesReport() {
-        final String fileName = "salesreport"+getDateTime()+".txt";
-        File file = new File(fileName);
+        String date = getDateTime().replaceAll("\\s+", "").replaceAll(":", "").replaceAll("/", "");
+        //final String fileName = "salesreport" + date;
+        final String fileName = "salesreport" + date + ".txt";
+        final File file = new File(fileName);
+        try {
+            if (file.createNewFile()) {
+            }
+            else {
+                System.out.println("an error occurred");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         try (PrintWriter writer = new PrintWriter(new FileWriter(file, true))) {
             for (Item entry : menu.getMenu()) {
                 writer.println(String.format("%s|%d", entry.getName(), 5 - entry.getAmount()));
             }
+            writer.println(getTotalSales());
         } catch (IOException e) {
             System.err.println("Error appending entry. Msg: " + e.getMessage());
         }
@@ -147,6 +161,16 @@ public class VendingMachine {
             }
         }
         return changeAsMap;
+    }
+
+    // helper function to calculate total sales
+    private String getTotalSales () {
+        BigDecimal totalSalesAmt = new BigDecimal(BigInteger.ZERO);
+        for (Item item : menu.getMenu()) {
+           totalSalesAmt = totalSalesAmt.add(item.getPrice().multiply( new BigDecimal( (5 - item.getAmount()))));
+        }
+        //**TOTAL SALES** $11.05
+        return String.format("%n**TOTAL SALES** $%.2f", totalSalesAmt );
     }
 
     // this is a helper method that returns the date and time

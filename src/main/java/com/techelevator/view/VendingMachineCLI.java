@@ -62,9 +62,13 @@ public class VendingMachineCLI {
                 }
                 isTransactionComplete = false;
             } else if (userInput.equals("3")) {
-                vendingMachine.endProgram();
                 isProgramOver = true;
-            } else {
+            }
+            else if (userInput.equals("4")) {
+                vendingMachine.secretOption();
+            }
+
+            else {
                 System.out.println(getErrorMessage());
                 System.out.println();
             }
