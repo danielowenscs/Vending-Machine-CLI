@@ -22,7 +22,7 @@ public class Item {
     private String setTypePhrase() {
         if (type.equals("Candy")) {
             return "Munch Munch, Yum!";
-        } else if (type.equals("Chips")) {
+        } else if (type.equals("Chip")) {
             return "Crunch Crunch, Yum!";
         } else if (type.equals("Drink")) {
             return "Glug Glug, Yum!";

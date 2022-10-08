@@ -38,22 +38,20 @@ public class VendingMachineCLI {
                     userInput = getUserInput();
                     System.out.println();
                     if (userInput.equals("1")) {
-                            System.out.print("Enter The Amount Of Money To Add (format 0.00): $");
-                            userInput = getUserInput();
-                            System.out.println();
-                            handelFeedInput(userInput);
-                    }
-                    else if (userInput.equals("2")) {
+                        System.out.print("Enter The Amount Of Money To Add (format 0.00): $");
+                        userInput = getUserInput();
+                        System.out.println();
+                        handelFeedInput(userInput);
+                    } else if (userInput.equals("2")) {
                         printMenu();
                         System.out.println();
                         System.out.print("Enter The Slot Identifier Of The Product You Wish To Purchase: ");
                         userInput = getUserInput();
                         System.out.println();
-                        Item itemSelected = vendingMachine.makePurchase(userInput);
-                        printReceipt(itemSelected);
+                        handelPurchase(userInput);
+
                         System.out.println();
-                    }
-                    else if (userInput.equals("3")) {
+                    } else if (userInput.equals("3")) {
                         printChange();
                         System.out.println();
                         isTransactionComplete = true;
@@ -78,21 +76,30 @@ public class VendingMachineCLI {
         String userInput = scanner.nextLine();
         return userInput;
     }
+
     private static void handelFeedInput(String userInput) {
         if (!vendingMachine.isValidFeed(userInput)) {
             System.out.println("Invalid Input, Balance Can Be At Most $100.00 And A Feed Must Be At Least $0.01, Please Try Again!");
             System.out.println();
-        }
-        else {
+        } else {
             vendingMachine.feedMoney(userInput);
         }
     }
 
-    private static void handelPurchase(String UserInput) {
-        // is slot identifier bad
-        // is item still in stock
-        // do you have enough to buy it
-
+    private static void handelPurchase(String userInput) {
+        if (!vendingMachine.isSlotIdentifierValid(userInput)){
+            System.out.println("ERROR: Slot Identifier Not Valid");
+        }
+        else if(!vendingMachine.isStockValid(userInput)){
+            System.out.println("ERROR: Not in Stock");
+        }
+        else if(!vendingMachine.isValidFunds(userInput)){
+            System.out.println("ERROR: Invalid Funds");
+        }
+        else {
+            Item itemSelected = vendingMachine.makePurchase(userInput);
+            printReceipt(itemSelected);
+        }
     }
 
     private static String getErrorMessage() {
@@ -127,7 +134,7 @@ public class VendingMachineCLI {
         System.out.println("+----+--------------------+-------+---------+");
         System.out.println("| ID | Name               | Price | Balance |");
         System.out.println("+----+--------------------+-------+---------+");
-        System.out.printf("| %s | %-18s | %2.2f  | %-7.2f |%n",itemSelected.getSlotIdentifier(), itemSelected.getName(), itemSelected.getPrice(), vendingMachine.getBalance());
+        System.out.printf("| %s | %-18s | %2.2f  | %-7.2f |%n", itemSelected.getSlotIdentifier(), itemSelected.getName(), itemSelected.getPrice(), vendingMachine.getBalance());
         System.out.println("+----+--------------------+-------+---------+");
         System.out.println(itemSelected.getPhrase());
 

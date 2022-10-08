@@ -16,13 +16,15 @@ public class VendingMachine {
     private Menu menu = new Menu();
     private Balance balance = new Balance();
 
-    public Menu getMenu () {
+    public Menu getMenu() {
         return menu;
     }
+
     public BigDecimal getBalance() {
         return balance.getBalance();
     }
-    public boolean isValidFeed (String userInput) {
+
+    public boolean isValidFeed(String userInput) {
         if (userInput.matches("^[0-9]*(\\.[0-9]{0,2})?$")) {
             if (Float.parseFloat(userInput) > 0) {
                 if (getBalance().add(new BigDecimal(userInput)).compareTo(new BigDecimal("100")) < 1) {
@@ -43,14 +45,30 @@ public class VendingMachine {
     }
 
     public Item makePurchase(String userInput) {
-            Item itemSelected = menu.getItem(userInput);
-            // update balance
-            balance.makePurchase(itemSelected.getPrice()); // item price
-            // update log
-            addToLog(String.format("%s %s %s $%.2f $%s", getDateTime(), itemSelected.getName(), itemSelected.getSlotIdentifier(), itemSelected.getPrice(), balance.getBalance()));
-            // update menu inventory
-            menu.updateMenuInventory(itemSelected);
-            return itemSelected;
+        Item itemSelected = menu.getItem(userInput);
+        // update balance
+        balance.makePurchase(itemSelected.getPrice()); // item price
+        // update log
+        addToLog(String.format("%s %s %s $%.2f $%s", getDateTime(), itemSelected.getName(), itemSelected.getSlotIdentifier(), itemSelected.getPrice(), balance.getBalance()));
+        // update menu inventory
+        menu.updateMenuInventory(itemSelected);
+        return itemSelected;
+    }
+
+
+    public boolean isSlotIdentifierValid(String slotIdentifier) {
+        Item itemSelected = menu.getItem(slotIdentifier);
+        return (!(itemSelected == null));
+    }
+
+    public boolean isStockValid(String slotIdentifier) {
+        Item itemSelected = menu.getItem(slotIdentifier);
+        return (!(itemSelected.getAmount() <= 0));
+    }
+
+    public boolean isValidFunds(String slotIdentifier){
+        Item itemSelected = menu.getItem(slotIdentifier);
+        return (!(getBalance().subtract(itemSelected.getPrice()).compareTo(BigDecimal.ZERO)<0));
     }
 
     public void finishTransaction() {
@@ -59,6 +77,7 @@ public class VendingMachine {
         // set balance to 0
         balance.setBalance(BigDecimal.ZERO);
     }
+
     public void endProgram() {
         createSalesReport();
     }
@@ -74,9 +93,9 @@ public class VendingMachine {
         }
     }
 
-     //this method creates a sales report file
+    //this method creates a sales report file
     private void createSalesReport() {
-        final String fileName = "salesreport.txt";
+        final String fileName = "salesreport"+getDateTime()+".txt";
         File file = new File(fileName);
         try (PrintWriter writer = new PrintWriter(new FileWriter(file, true))) {
             for (Item entry : menu.getMenu()) {
@@ -87,9 +106,9 @@ public class VendingMachine {
         }
     }
 
-    public Map<String,Integer> getChange() {
+    public Map<String, Integer> getChange() {
         // if balance is zero no change needs to be given so we can exit the function
-        if (getBalance().compareTo(BigDecimal.ZERO) < 1)  {
+        if (getBalance().compareTo(BigDecimal.ZERO) < 1) {
             return null;
         }
         // create an empty map to store the data for change
@@ -106,7 +125,7 @@ public class VendingMachine {
             // assign the coin based on the division
             if (balanceLeft / 25 > 0) {
                 currCoin = "Quarters";
-                balanceLeft -=25;
+                balanceLeft -= 25;
 
             } else if (balanceLeft / 10 > 0) {
                 currCoin = "Dimes";
@@ -120,7 +139,7 @@ public class VendingMachine {
             }
             // check if coin is in map, if so add it
             if (changeAsMap.containsKey(currCoin)) {
-                changeAsMap.replace(currCoin, changeAsMap.get(currCoin)+1);
+                changeAsMap.replace(currCoin, changeAsMap.get(currCoin) + 1);
             }
             // if not then add it and assign its value to 1
             else {
